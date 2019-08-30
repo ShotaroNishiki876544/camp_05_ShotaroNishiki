@@ -1,3 +1,5 @@
+import com.sun.org.apache.xpath.internal.objects.XString;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -14,16 +16,17 @@ public class kadai5 {
         answer1 = scanner.nextInt();
 
         System.out.println("ぼくと一緒にスライムと戦いませんか？");
-        System.out.println("1 はい　　　2　いいえ ");
+        System.out.println("1 はい　　　2　いいえ ");//いいえでも戦うのは仕様
 
         int answer2;
         answer2 = scanner.nextInt();
 
         int turn = 1;
+        String[] turnMessage={"ぼく「一緒に頑張ろう」","ぼく「どちらか一方が倒れたら負けだよ」","ぼく「ぼくは50%の確率でうだうだして何もしないよ」","「ここが踏ん張りどころ！」","ぼく「」"};
         System.out.println("--------------------------");
         System.out.println("スライム　が　あらわれた！");
         System.out.println("--------------------------");
-        int yourHP=20, yourMP=6, bokuHP=15, bokuMP=0, bossHP=30;
+        int yourHP=20, yourMP=6, bokuHP=15, bokuMP=0, bossHP=35;
         boolean victory=false;
 
 
@@ -47,6 +50,7 @@ public class kadai5 {
           int countDown=6-turn;
           System.out.print(countDown);
           System.out.println("ターン以内にやっつけろ！ ");
+          System.out.println(turnMessage[turn-1]);
           System.out.println("どうする？");
           System.out.println("1 たたかう　　　2　じゅもん   　3 にげる  ");
           int yourAction = 1;
@@ -117,7 +121,7 @@ public class kadai5 {
           int bokuAction = r.nextInt(2);
           if (bokuAction == 1) {
               System.out.print("ぼくのこうげき！");
-              int damage = damageCal(4);
+              int damage = damageCal(6);
               System.out.print("スライムに");
               System.out.print(damage);
               System.out.println("ダメージ!");
@@ -135,13 +139,22 @@ public class kadai5 {
 
 
           int bossAction = r.nextInt(2);
-          if (bokuAction == 1) {
-              int damage = damageCal(5);
-              System.out.print("スライムのこうげき！");
-              System.out.print("あなたに");
-              System.out.print(damage);
-              System.out.println("ダメージ!");
-              yourHP -= damage;
+          if (bossAction == 1) {
+              if(turn==2||turn==3) {
+                  int damage = damageCal(10);
+                  System.out.print("スライムはメラをとなえた！");
+                  System.out.print("あなたに");
+                  System.out.print(damage);
+                  System.out.println("ダメージ!");
+                  yourHP -= damage;
+              }else{
+                  int damage = damageCal(5);
+                  System.out.print("スライムのこうげき！");
+                  System.out.print("あなたに");
+                  System.out.print(damage);
+                  System.out.println("ダメージ!");
+                  yourHP -= damage;
+              }
           } else {
 
               System.out.print("スライムのこうげき！");
@@ -189,7 +202,7 @@ public class kadai5 {
 
         Random r=new Random();
         double i = power + 1.5*r.nextGaussian();
-        //ダメージ=force+標準偏差2.25のガウシアン
+        //ダメージ ガウス分布でバラツク
         i=Math.round(i);
         int j = (int)i;
         return j;
